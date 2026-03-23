@@ -1,0 +1,30 @@
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\bin\Debug\net9.0\appsettings.Development.json
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\bin\Debug\net9.0\appsettings.json
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\bin\Debug\net9.0\SA ID Validator.staticwebassets.runtime.json
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\bin\Debug\net9.0\SA ID Validator.staticwebassets.endpoints.json
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\bin\Debug\net9.0\SA ID Validator.exe
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\bin\Debug\net9.0\SA ID Validator.deps.json
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\bin\Debug\net9.0\SA ID Validator.runtimeconfig.json
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\bin\Debug\net9.0\SA ID Validator.dll
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\bin\Debug\net9.0\SA ID Validator.pdb
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\rpswa.dswa.cache.json
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\SA ID Validator.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\SA ID Validator.AssemblyInfoInputs.cache
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\SA ID Validator.AssemblyInfo.cs
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\SA ID Validator.csproj.CoreCompileInputs.cache
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\SA ID Validator.MvcApplicationPartsAssemblyInfo.cache
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\rjimswa.dswa.cache.json
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\scopedcss\bundle\SA ID Validator.styles.css
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\staticwebassets.build.json
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\staticwebassets.build.json.cache
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\staticwebassets.development.json
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\SA ID Validator.dll
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\refint\SA ID Validator.dll
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\SA ID Validator.pdb
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\SA ID Validator.genruntimeconfig.cache
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\ref\SA ID Validator.dll
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\SA ID Validator.RazorAssemblyInfo.cache
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\SA ID Validator.RazorAssemblyInfo.cs
