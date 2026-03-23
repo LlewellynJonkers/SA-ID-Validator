@@ -19,11 +19,7 @@
     @section Scripts{
 
     <script>
-        var logEnabled = false;
-        document.onload(() => {
-            logEnabled = false; // set to true to enable detailed logs in the "Validation Log" section
-            log('Validation log enabled.');
-        });
+        var logEnabled = false; // set to false to disable log output
         function log(message) {
             if (logEnabled) {
             const logList = document.getElementById('log');
