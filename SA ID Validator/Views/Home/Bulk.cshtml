@@ -1,0 +1,93 @@
+<h1>Bulk South African ID Validator</h1>
+<p>Upload a CSV file containing South African ID numbers to validate them in bulk. The CSV file should have a header row with a column named "IDNumber".</p>
+<form asp-action="Bulk" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="csvFile" class="form-label">CSV File</label>
+        <input class="form-control" type="file" id="csvFile" name="csvFile" accept=".csv" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Validate</button>
+</form>
+<hr/>
+<p>OR</p>
+<hr/>
+<p> Input ID Numbers Manually Seperated by lines:</p>
+<form>
+    <div class="mb-3">
+        <label for="idNumbers" class="form-label">ID Numbers</label>
+        <textarea class="form-control" id="idNumbers" name="idNumbers" rows="10" placeholder="Enter one ID number per line"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Validate</button>
+</form>
+<div>
+    <ul id="log"></ul>
+</div>
+<div class="hidden">
+    <table id="resultsTable" class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID Number</th>
+                <th>Valid</th>
+                <th>Date of Birth</th>
+                <th>Age</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Results will be populated here -->
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    <script>
+        "use strict";
+        var logEnabled = false; // set to false to disable log output
+        function escapeHtml(text) {
+            return text.replace(/[&<>"']/g, function(m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[m];
+            });
+        }
+        function log(message) {
+            if (!logEnabled) return;
+            const logElement = document.getElementById('log');
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.textContent = message;
+            logElement.appendChild(listItem);
+        }
+        function clearLog() {
+            const logElement = document.getElementById('log');
+            logElement.innerHTML = '';
+        }
+        function bulkValidate(){
+            const textarea = document.getElementById('idNumbers');
+            const idNumbers = textarea.value.split('\n').map(line => line.trim().replace(" ","")).filter(line => line.length > 0);
+            log('Starting bulk validation of ' + idNumbers.length + ' ID numbers...');
+            idNumbers.forEach(id => {
+                validateSAIDSingle(id);
+                log('Validated ID: ' + id);
+            });
+            log('Bulk validation completed.');
+        }
+        function validateSAIDSingle(saId) {
+            let table = document.getElementById('resultsTable').getElementsByTagName('tbody')[0];
+            const id = saId.replace(/\D/g, '');
+
+            if (id.length !== 13) {
+                var tr = document.createElement('tr');
+                var tdId = document.createElement('td');
+                tdId.setAttribute('scope', 'row');
+                tdId.setAttribute('colspan', '4');
+                tdId.textContent = escapeHtml('Invalid: ID must contain exactly 13 digits.');
+                tr.appendChild(tdId);
+                table.appendChild(tr);
+            }
+            
+            log('Validating ID: ' + saId);
+        }
+    </script>
+}

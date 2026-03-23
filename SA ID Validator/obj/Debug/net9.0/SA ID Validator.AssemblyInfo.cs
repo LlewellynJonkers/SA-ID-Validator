@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SA ID Validator")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2794bce25a41ad2a36b128d9f47fdf2d4673e95c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b73b14c184bcdb82573554497df435d13c597033")]
 [assembly: System.Reflection.AssemblyProductAttribute("SA ID Validator")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SA ID Validator")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
