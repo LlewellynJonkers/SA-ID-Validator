@@ -1,11 +1,16 @@
-    <h2 class="mb-4">South African ID Validator</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label class="form-label" for="saId">ID Number (13 digits):</label>
-                <input class="form-control" id="saId" maxlength="14" inputmode="numeric" pattern="\d*" />
-            </div>
-            <button type="button" class="btn btn-primary" onclick="validateSAID()">Validate</button>
+    <div class="card mb-4" style="max-width: 640px;">
+        <div class="card-body">
+            <h2 class="card-title">South African ID Validator</h2>
+            <form id="saIdForm" class="row g-2">
+                <div class="col-12 col-md-8">
+                    <label class="form-label" for="saId">ID Number (13 digits):</label>
+                    <input class="form-control" id="saId" maxlength="13" inputmode="numeric" pattern="\d*" placeholder="1234567890123" autocomplete="off" />
+                </div>
+                <div class="col-12 col-md-4 d-flex align-items-end gap-2">
+                    <button type="button" id="pasteButton" class="btn btn-secondary w-100">Paste</button>
+                    <button type="submit" id="validateButton" class="btn btn-primary w-100">Validate</button>
+                </div>
+            </form>
         </div>
     </div>
     <div id="result" class="mt-3 alert alert-info" style="display: none;"></div>
@@ -19,15 +24,51 @@
     @section Scripts{
 
     <script>
+        "use strict";
         var logEnabled = false; // set to false to disable log output
-        function log(message) {
-            if (logEnabled) {
-            const logList = document.getElementById('log');
-            const entry = document.createElement('li');
-            entry.className = 'list-group-item';
-            entry.textContent = message;
-            logList.appendChild(entry);
+        function pasteClipboard() {
+            navigator.clipboard.readText().then(text => {
+                const input = document.getElementById('saId');
+                input.focus();
+                input.value = text.trim();
+                log('Pasted from clipboard: ' + text.trim());
+                validateSAID();
+            }).catch(err => {
+                log('Failed to read clipboard contents: ' + err);
+            });
+        }
+        async function pasteClipboardAsync() {
+            try {
+                const permission = await navigator.permissions.query({ name: "clipboard-read" });
+
+                if (permission.state === "denied") {
+                    log("Clipboard access denied");
+                    return;
+                }
+
+                const text = await navigator.clipboard.readText().trim().replace(" ",'');
+                const input = document.getElementById('saId');
+                input.focus();
+                document.getElementById('saId').value = text.trim();
+                log('Pasted: ' + text.trim());
+                validateSAID();
+
+            } catch (err) {
+                try {
+                    const text = await navigator.clipboard.readText();
+                    document.getElementById('saId').value = text.trim();
+                    validateSAID();
+                } catch (err) {
+                    console.error('Clipboard error:', err);
+                }
             }
+        }
+        function log(message) {
+            if (!logEnabled) return;
+            const entry = document.createElement('li');
+            entry.className = 'list-group-item text-muted small';
+            entry.textContent = message;
+            document.getElementById('log').appendChild(entry);
         }
         function clearLog() {
             document.getElementById('log').innerHTML = '';
@@ -102,17 +143,22 @@
             // Build result
             const parts = [];
             parts.push('Valid ID checksum: ' + (checksumValid ? 'Yes' : 'No'));
-            parts.push('Date of birth: ' + dob.toLocaleDateString().slice(0,10));
+            parts.push('Date of birth: ' + dob.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            }));
             parts.push('Current age: ' + age + ' years');
             parts.push('Gender: ' + gender);
             parts.push('Nationality status digit: ' + nationalityDigit + ' (' + nationality + ')');
 
-            out.innerHTML = parts.map(p => '<div>' + escapeHtml(p) + '</div>').join('');
-            if (checksumValid) {
-                out.classList.add('alert-success');
-            } else {
-                out.classList.add('alert-warning');
-            }
+            setResult(parts.map(escapeHtml).map(p => `<div>${p}</div>`).join(''), checksumValid ? 'success' : 'warning');
+        }
+
+        function setResult(message, type) {
+            const out = document.getElementById('result');
+            out.innerHTML = message;
+            out.className = `mt-3 alert alert-${type}`;
             out.style.display = 'block';
         }
 
@@ -155,5 +201,13 @@
                 return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
             });
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('saIdForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                validateSAID();
+            });
+            document.getElementById('pasteButton').addEventListener('click', pasteClipboardAsync);
+        });
     </script>
     }
