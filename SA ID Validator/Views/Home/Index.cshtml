@@ -48,42 +48,42 @@
             </div>
             <div class="card-body">
                 <div id="validationDetails" style="display: none;">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="p-3 bg-light rounded">
-                                <small class="text-muted d-block">VALIDITY</small>
-                                <span id="validityStatus" class="fw-bold"></span>
+                    <div class="row g-2">
+                        <div class="col-12 col-sm-6">
+                            <div class="validation-detail-box">
+                                <small class="text-muted d-block mb-2">VALIDITY</small>
+                                <span id="validityStatus" class="fw-bold fs-5"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="p-3 bg-light rounded">
-                                <small class="text-muted d-block">DATE OF BIRTH</small>
-                                <span id="dobDisplay" class="fw-bold"></span>
+                        <div class="col-12 col-sm-6">
+                            <div class="validation-detail-box">
+                                <small class="text-muted d-block mb-2">DATE OF BIRTH</small>
+                                <span id="dobDisplay" class="fw-bold fs-5"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="p-3 bg-light rounded">
-                                <small class="text-muted d-block">AGE</small>
-                                <span id="ageDisplay" class="fw-bold"></span>
+                        <div class="col-12 col-sm-6">
+                            <div class="validation-detail-box">
+                                <small class="text-muted d-block mb-2">AGE</small>
+                                <span id="ageDisplay" class="fw-bold fs-5"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="p-3 bg-light rounded">
-                                <small class="text-muted d-block">GENDER</small>
-                                <span id="genderDisplay" class="fw-bold"></span>
+                        <div class="col-12 col-sm-6">
+                            <div class="validation-detail-box">
+                                <small class="text-muted d-block mb-2">GENDER</small>
+                                <span id="genderDisplay" class="fw-bold fs-5"></span>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="p-3 bg-light rounded">
-                                <small class="text-muted d-block">NATIONALITY</small>
-                                <span id="nationalityDisplay" class="fw-bold"></span>
+                            <div class="validation-detail-box">
+                                <small class="text-muted d-block mb-2">NATIONALITY</small>
+                                <span id="nationalityDisplay" class="fw-bold fs-5"></span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="noValidation" class="text-center text-muted py-4">
-                    <i class="fas fa-info-circle fa-2x mb-3"></i>
-                    <p>Enter an ID number above to see validation details</p>
+                <div id="noValidation" class="text-center text-muted py-5">
+                    <i class="fas fa-info-circle fa-3x mb-3 opacity-50"></i>
+                    <p class="mb-0">Enter an ID number above to see validation details</p>
                 </div>
             </div>
         </div>
@@ -141,7 +141,7 @@
             document.getElementById('log').appendChild(entry);
         }
         function clearLog() {
-            document.getElementById('log').innerHTML = '';
+            //document.getElementById('log').innerHTML = '';
         }
         function validateSAID() {
             clearLog();

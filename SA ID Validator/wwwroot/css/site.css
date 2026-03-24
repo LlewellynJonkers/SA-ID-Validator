@@ -73,6 +73,42 @@ body {
 .alert {
     border-radius: 10px;
     border: none;
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+}
+
+#result {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+#validationDetails {
+    margin-top: 1rem;
+}
+
+.validation-detail-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 85px;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(139, 157, 176, 0.08) 0%, rgba(122, 143, 163, 0.05) 100%);
+    border-left: 4px solid #7a8fa3;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(122, 143, 163, 0.08);
+    transition: all 0.3s ease;
+}
+
+.validation-detail-box:hover {
+    box-shadow: 0 4px 12px rgba(122, 143, 163, 0.12);
+    border-left-color: #6b7f94;
+}
+
+.validation-detail-box small {
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .table {
