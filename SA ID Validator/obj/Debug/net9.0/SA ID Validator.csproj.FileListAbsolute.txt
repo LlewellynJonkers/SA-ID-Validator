@@ -30,3 +30,4 @@ c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\S
 c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\SA ID Validator.RazorAssemblyInfo.cs
 c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\SA ID Validator.sourcelink.json
 C:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\compressed\907yj6zpt9-mo0iq1pafu.gz
+c:\Users\Llewellyn\source\git\SA ID Validator\SA ID Validator\obj\Debug\net9.0\compressed\fb47jvsz6x-2p3v51w58t.gz
