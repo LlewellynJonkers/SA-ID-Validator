@@ -13,11 +13,23 @@ namespace SA_ID_Validator.Controllers
         // GET: /
         public IActionResult Index()
         {
-            return View();
+            return View(new Models.ErrorViewModel(){RequestId = HttpContext.TraceIdentifier});
+        }
+        // GET: /Home/Bulk
+        [HttpGet]
+        public IActionResult Bulk()
+        {
+            return View(new Models.ErrorViewModel(){RequestId = HttpContext.TraceIdentifier});
         }
 
         // GET: /Home/Privacy
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        // GET: /Home/Contact
+        public IActionResult Contact()
         {
             return View();
         }

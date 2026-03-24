@@ -1,0 +1,49 @@
+@model SA_ID_Validator.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Contact";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h2 class="card-title mb-0">Contact Us</h2>
+            </div>
+            <div class="card-body">
+                <p class="lead">Get in touch with the SA ID Validator team.</p>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h5>Developer</h5>
+                        <p class="mb-1">Llewellyn Jonkers</p>
+                        <p class="text-muted small">Full Stack Developer</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <h5>Project Links</h5>
+                        <p class="mb-1">
+                            <a href="https://github.com/llewellynjonkers" target="_blank" class="text-decoration-none">
+                                <i class="fab fa-github me-1"></i>GitHub Profile
+                            </a>
+                        </p>
+                        <p class="mb-1">
+                            <a href="https://github.com/llewellynjonkers/sa-id-validator" target="_blank" class="text-decoration-none">
+                                <i class="fab fa-github me-1"></i>Project Repository
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle me-2"></i>About This Project</h6>
+                    <p class="mb-0">This South African ID Validator is an open-source tool for validating South African ID numbers according to the official Luhn algorithm and format specifications.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Head {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+}

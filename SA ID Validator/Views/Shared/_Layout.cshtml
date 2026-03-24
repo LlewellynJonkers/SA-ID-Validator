@@ -10,6 +10,7 @@
 
     <!-- Site CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @RenderSection("Head", required: false)
 </head>
 <body>
     <header>
@@ -26,7 +27,7 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Bulk">Bulk Validation</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>

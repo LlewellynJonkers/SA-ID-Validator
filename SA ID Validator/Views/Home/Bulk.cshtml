@@ -1,93 +1,547 @@
-<h1>Bulk South African ID Validator</h1>
-<p>Upload a CSV file containing South African ID numbers to validate them in bulk. The CSV file should have a header row with a column named "IDNumber".</p>
-<form asp-action="Bulk" method="post" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label for="csvFile" class="form-label">CSV File</label>
-        <input class="form-control" type="file" id="csvFile" name="csvFile" accept=".csv" required>
+@model SA_ID_Validator.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Bulk Validation";
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+        <div class="card shadow-lg mb-4">
+            <div class="card-header bg-primary text-white text-center">
+                <h1 class="card-title mb-0 h2">
+                    <i class="fas fa-file-csv me-2"></i>
+                    Bulk South African ID Validator
+                </h1>
+                <p class="mb-0 mt-2 opacity-75">Validate multiple ID numbers at once</p>
+            </div>
+            <div class="card-body">
+                <!-- CSV Upload Section -->
+                <div class="mb-4">
+                    <h4 class="mb-3">
+                        <i class="fas fa-upload me-2"></i>
+                        Upload CSV File
+                    </h4>
+                    <p class="text-muted">Upload a CSV file containing South African ID numbers. The file should have a header row with a column named "IDNumber".</p>
+                    <form asp-action="Bulk" method="post" enctype="multipart/form-data" class="row g-3">
+                        <div class="col-12 col-md-8">
+                            <input class="form-control form-control-lg" type="file" id="csvFile" name="csvFile" accept=".csv" required>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button type="submit" class="btn btn-primary w-100 btn-lg">
+                                <i class="fas fa-play me-1"></i>Validate File
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="text-center mb-4">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <hr class="flex-fill">
+                        <span class="px-3 text-muted">OR</span>
+                        <hr class="flex-fill">
+                    </div>
+                </div>
+
+                <!-- Manual Input Section -->
+                <div>
+                    <h4 class="mb-3">
+                        <i class="fas fa-keyboard me-2"></i>
+                        Manual Input
+                    </h4>
+                    <p class="text-muted">Enter ID numbers manually, one per line.</p>
+                    <form class="row g-3">
+                        <div class="col-12">
+                            <textarea class="form-control" id="idNumbers" name="idNumbers" rows="8" placeholder="Enter one ID number per line&#10;Example:&#10;1234567890123&#10;9876543210987"></textarea>
+                            <div class="form-text">Enter each ID number on a new line</div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex gap-2 flex-wrap">
+                                <button type="button" onclick="clearInput()" class="btn btn-outline-secondary">
+                                    <i class="fas fa-trash me-1"></i>Clear
+                                </button>
+                                <button type="button" onclick="bulkValidate()" class="btn btn-primary">
+                                    <i class="fas fa-check-circle me-1"></i>Validate IDs
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsContainer" class="card shadow" style="display: none;">
+            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                <h4 class="card-title mb-0">
+                    <i class="fas fa-table me-2"></i>
+                    Validation Results
+                </h4>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-download me-1"></i>Export
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#" onclick="exportToXLSX(); return false;"><i class="fas fa-file-excel me-2"></i>Spreadsheet (XLSX)</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="exportToCSV(); return false;"><i class="fas fa-file-csv me-2"></i>CSV</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="exportToPDF(); return false;"><i class="fas fa-file-pdf me-2"></i>PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table id="resultsTable" class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th style="cursor: pointer;" onclick="sortTable(0)"><i class="fas fa-hashtag me-1"></i>ID Number <i class="fas fa-sort text-muted ms-1" style="font-size: 0.8rem;"></i></th>
+                                <th style="cursor: pointer;" onclick="sortTable(1)"><i class="fas fa-check-circle me-1"></i>Valid <i class="fas fa-sort text-muted ms-1" style="font-size: 0.8rem;"></i></th>
+                                <th style="cursor: pointer;" onclick="sortTable(2)"><i class="fas fa-birthday-cake me-1"></i>Date of Birth <i class="fas fa-sort text-muted ms-1" style="font-size: 0.8rem;"></i></th>
+                                <th style="cursor: pointer;" onclick="sortTable(3)"><i class="fas fa-user-clock me-1"></i>Age <i class="fas fa-sort text-muted ms-1" style="font-size: 0.8rem;"></i></th>
+                                <th style="cursor: pointer;" onclick="sortTable(4)"><i class="fas fa-venus-mars me-1"></i>Gender <i class="fas fa-sort text-muted ms-1" style="font-size: 0.8rem;"></i></th>
+                                <th style="cursor: pointer;" onclick="sortTable(5)"><i class="fas fa-flag me-1"></i>Nationality <i class="fas fa-sort text-muted ms-1" style="font-size: 0.8rem;"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Results will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <small>
+                    <i class="fas fa-info-circle me-1"></i>
+                    Showing <span id="resultCount">0</span> results
+                </small>
+            </div>
+        </div>
+
+        <!-- Progress/Status Section -->
+        <div id="progressContainer" class="card shadow" style="display: none;">
+            <div class="card-body text-center">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Validating...</span>
+                </div>
+                <h5>Validating ID Numbers...</h5>
+                <p class="text-muted">Please wait while we process your request.</p>
+            </div>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Validate</button>
-</form>
-<hr/>
-<p>OR</p>
-<hr/>
-<p> Input ID Numbers Manually Seperated by lines:</p>
-<form>
-    <div class="mb-3">
-        <label for="idNumbers" class="form-label">ID Numbers</label>
-        <textarea class="form-control" id="idNumbers" name="idNumbers" rows="10" placeholder="Enter one ID number per line"></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Validate</button>
-</form>
-<div>
-    <ul id="log"></ul>
 </div>
-<div class="hidden">
-    <table id="resultsTable" class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID Number</th>
-                <th>Valid</th>
-                <th>Date of Birth</th>
-                <th>Age</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Results will be populated here -->
-        </tbody>
-    </table>
-</div>
+
+@section Head {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- SheetJS for XLSX export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- jsPDF autoTable plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+}
+
+
+
+
 @section Scripts {
     <script>
         "use strict";
-        var logEnabled = false; // set to false to disable log output
-        function escapeHtml(text) {
-            return text.replace(/[&<>"']/g, function(m) {
-                return {
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    '"': '&quot;',
-                    "'": '&#39;'
-                }[m];
-            });
+
+        let currentResults = [];
+        let sortColumn = -1;
+        let sortAscending = true;
+
+        function clearInput() {
+            document.getElementById('idNumbers').value = '';
+            hideResults();
         }
-        function log(message) {
-            if (!logEnabled) return;
-            const logElement = document.getElementById('log');
-            const listItem = document.createElement('li');
-            listItem.className = 'list-group-item';
-            listItem.textContent = message;
-            logElement.appendChild(listItem);
+
+        function hideResults() {
+            document.getElementById('resultsContainer').style.display = 'none';
+            document.getElementById('progressContainer').style.display = 'none';
         }
-        function clearLog() {
-            const logElement = document.getElementById('log');
-            logElement.innerHTML = '';
+
+        function showProgress() {
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('resultsContainer').style.display = 'none';
         }
-        function bulkValidate(){
+
+        function showResults() {
+            document.getElementById('progressContainer').style.display = 'none';
+            document.getElementById('resultsContainer').style.display = 'block';
+        }
+
+        function bulkValidate() {
             const textarea = document.getElementById('idNumbers');
-            const idNumbers = textarea.value.split('\n').map(line => line.trim().replace(" ","")).filter(line => line.length > 0);
-            log('Starting bulk validation of ' + idNumbers.length + ' ID numbers...');
-            idNumbers.forEach(id => {
-                validateSAIDSingle(id);
-                log('Validated ID: ' + id);
-            });
-            log('Bulk validation completed.');
+            const ids = textarea.value.trim().split('\n').map(id => id.trim()).filter(id => id.length > 0);
+
+            if (ids.length === 0) {
+                alert('Please enter at least one ID number.');
+                return;
+            }
+
+            if (ids.length > 1000) {
+                alert('Please enter no more than 1000 ID numbers at once.');
+                return;
+            }
+
+            showProgress();
+
+            // Process IDs in batches to avoid blocking the UI
+            setTimeout(() => {
+                const results = [];
+                for (const id of ids) {
+                    results.push(validateSingleID(id));
+                }
+
+                currentResults = results;
+                sortColumn = -1;
+                sortAscending = true;
+                displayResults(results);
+                showResults();
+            }, 100);
         }
-        function validateSAIDSingle(saId) {
-            let table = document.getElementById('resultsTable').getElementsByTagName('tbody')[0];
-            const id = saId.replace(/\D/g, '');
+
+        function validateSingleID(rawId) {
+            const id = rawId.replace(/\D/g, ''); // remove non-digits
+
+            const result = {
+                id: rawId,
+                valid: false,
+                dob: 'N/A',
+                age: 'N/A',
+                gender: 'N/A',
+                nationality: 'N/A',
+                error: null
+            };
 
             if (id.length !== 13) {
-                var tr = document.createElement('tr');
-                var tdId = document.createElement('td');
-                tdId.setAttribute('scope', 'row');
-                tdId.setAttribute('colspan', '4');
-                tdId.textContent = escapeHtml('Invalid: ID must contain exactly 13 digits.');
-                tr.appendChild(tdId);
-                table.appendChild(tr);
+                result.error = 'Invalid length';
+                return result;
             }
-            
-            log('Validating ID: ' + saId);
+
+            if (!/^\d{13}$/.test(id)) {
+                result.error = 'Contains non-digits';
+                return result;
+            }
+
+            // Extract DOB YYMMDD
+            const yy = parseInt(id.substr(0, 2), 10);
+            const mm = parseInt(id.substr(2, 2), 10);
+            const dd = parseInt(id.substr(4, 2), 10);
+
+            // Infer century
+            const now = new Date();
+            const currentTwoDigit = now.getFullYear() % 100;
+            let year = (yy <= currentTwoDigit) ? 2000 + yy : 1900 + yy;
+
+            const dob = new Date(year, mm-1, dd, 0, 0, 0);
+            const validDate = dob.getFullYear() === year && (dob.getMonth()+1) === mm && dob.getDate() === dd;
+
+            if (!validDate) {
+                result.error = 'Invalid date';
+                return result;
+            }
+
+            const age = calculateAge(dob, now);
+            if (age < 0 || age > 120) {
+                result.error = 'Invalid age';
+                return result;
+            }
+
+            // Gender
+            const genderSeq = parseInt(id.substr(6, 4), 10);
+            const gender = (genderSeq >= 5000) ? 'Male' : 'Female';
+
+            // Nationality
+            const nationalityDigit = id.charAt(10);
+            let nationality = 'Invalid';
+            if (nationalityDigit === '0') nationality = 'SA citizen';
+            else if (nationalityDigit === '1') nationality = 'Permanent resident';
+            else if (nationalityDigit === '2') nationality = 'Refugee';
+
+            // Checksum
+            const checksumValid = luhnCheck(id);
+
+            result.valid = checksumValid;
+            result.dob = dob.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+            result.age = age;
+            result.gender = gender;
+            result.nationality = nationality;
+
+            return result;
+        }
+
+        function displayResults(results) {
+            renderTable(results);
+            document.getElementById('resultCount').textContent = results.length;
+        }
+
+        function renderTable(results) {
+            const tbody = document.getElementById('resultsTable').querySelector('tbody');
+            tbody.innerHTML = '';
+
+            results.forEach(result => {
+                const row = document.createElement('tr');
+
+                const validIcon = result.valid ?
+                    '<i class="fas fa-check-circle text-success"></i>' :
+                    '<i class="fas fa-times-circle text-danger"></i>';
+
+                const validText = result.valid ? 'Valid' : (result.error || 'Invalid');
+
+                row.innerHTML = `
+                    <td class="font-monospace">${escapeHtml(result.id)}</td>
+                    <td>${validIcon} ${validText}</td>
+                    <td>${result.dob}</td>
+                    <td>${result.age}</td>
+                    <td>
+                        <i class="fas ${result.gender === 'Male' ? 'fa-mars text-primary' : 'fa-venus text-danger'} me-1"></i>
+                        ${result.gender}
+                    </td>
+                    <td>
+                        <i class="fas fa-flag text-info me-1"></i>
+                        ${result.nationality}
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        function sortTable(columnIndex) {
+            // Toggle sort direction if clicking the same column
+            if (sortColumn === columnIndex) {
+                sortAscending = !sortAscending;
+            } else {
+                sortColumn = columnIndex;
+                sortAscending = true;
+            }
+
+            // Update sort indicators
+            updateSortIndicators();
+
+            // Sort the data
+            let sortedResults = [...currentResults];
+
+            sortedResults.sort((a, b) => {
+                let aVal, bVal;
+
+                switch (columnIndex) {
+                    case 0: // ID Number
+                        aVal = a.id;
+                        bVal = b.id;
+                        break;
+                    case 1: // Valid
+                        aVal = a.valid ? 1 : 0;
+                        bVal = b.valid ? 1 : 0;
+                        break;
+                    case 2: // Date of Birth
+                        aVal = new Date(a.dob).getTime();
+                        bVal = new Date(b.dob).getTime();
+                        break;
+                    case 3: // Age
+                        aVal = parseInt(a.age) || 0;
+                        bVal = parseInt(b.age) || 0;
+                        break;
+                    case 4: // Gender
+                        aVal = a.gender;
+                        bVal = b.gender;
+                        break;
+                    case 5: // Nationality
+                        aVal = a.nationality;
+                        bVal = b.nationality;
+                        break;
+                }
+
+                if (typeof aVal === 'string') {
+                    aVal = aVal.toLowerCase();
+                    bVal = bVal.toLowerCase();
+                    return sortAscending ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+                } else {
+                    return sortAscending ? aVal - bVal : bVal - aVal;
+                }
+            });
+
+            renderTable(sortedResults);
+        }
+
+        function updateSortIndicators() {
+            const headers = document.querySelectorAll('#resultsTable thead th');
+            headers.forEach((header, index) => {
+                const icon = header.querySelector('i:last-child');
+                if (icon) {
+                    icon.className = 'fas text-muted ms-1';
+                    icon.style.fontSize = '0.8rem';
+
+                    if (index === sortColumn) {
+                        icon.classList.add(sortAscending ? 'fa-arrow-up' : 'fa-arrow-down');
+                    } else {
+                        icon.classList.add('fa-sort');
+                    }
+                }
+            });
+        }
+
+        function getTableData() {
+            const table = document.getElementById('resultsTable');
+            const rows = table.querySelectorAll('tr');
+            const data = [];
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td, th');
+                const rowData = [];
+                cells.forEach(cell => {
+                    const text = cell.textContent || cell.innerText || '';
+                    rowData.push(text.trim());
+                });
+                data.push(rowData);
+            });
+
+            return data;
+        }
+
+        function exportToCSV() {
+            const table = document.getElementById('resultsTable');
+            const rows = table.querySelectorAll('tr');
+            const csv = [];
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td, th');
+                const rowData = [];
+                cells.forEach(cell => {
+                    const text = cell.textContent || cell.innerText || '';
+                    rowData.push('"' + text.replace(/"/g, '""') + '"');
+                });
+                csv.push(rowData.join(','));
+            });
+
+            const csvContent = csv.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'id_validation_results.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        function exportToXLSX() {
+            const data = getTableData();
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Validation Results');
+
+            // Set column widths
+            const colWidths = [20, 15, 18, 10, 12, 18];
+            ws['!cols'] = colWidths.map(width => ({ wch: width }));
+
+            XLSX.writeFile(wb, 'id_validation_results.xlsx');
+        }
+
+        function exportToPDF() {
+            const data = getTableData();
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Set up the document
+            doc.setFontSize(16);
+            doc.text('ID Validation Results', 15, 15);
+
+            // Use autoTable for better table formatting
+            if (doc.autoTable) {
+                doc.autoTable({
+                    head: [data[0]],
+                    body: data.slice(1),
+                    startY: 25,
+                    theme: 'grid',
+                    headStyles: {
+                        fillColor: [122, 143, 163],
+                        textColor: [255, 255, 255],
+                        fontStyle: 'bold'
+                    },
+                    alternateRowStyles: {
+                        fillColor: [240, 240, 240]
+                    },
+                    margin: { top: 10 },
+                    didDrawPage: function(data) {
+                        // Add page numbers
+                        const pageCount = doc.internal.getPages().length;
+                        const pageSize = doc.internal.pageSize;
+                        const pageHeight = pageSize.getHeight();
+                        const pageWidth = pageSize.getWidth();
+
+                        doc.setFontSize(10);
+                        for (let i = 1; i <= pageCount; i++) {
+                            doc.setPage(i);
+                            doc.text('Page ' + i + ' of ' + pageCount, pageWidth / 2, pageHeight - 10, { align: 'center' });
+                        }
+                    }
+                });
+            } else {
+                // Fallback if autoTable is not available
+                doc.text('Results:', 15, 30);
+                let yPosition = 40;
+                doc.setFontSize(10);
+
+                data.forEach((row, index) => {
+                    if (index === 0) {
+                        doc.setFont(undefined, 'bold');
+                    } else {
+                        doc.setFont(undefined, 'normal');
+                    }
+
+                    doc.text(row.join(' | '), 15, yPosition);
+                    yPosition += 10;
+
+                    if (yPosition > 270) {
+                        doc.addPage();
+                        yPosition = 15;
+                    }
+                });
+            }
+
+            doc.save('id_validation_results.pdf');
+        }
+
+        function calculateAge(dob, now) {
+            let age = now.getFullYear() - dob.getFullYear();
+            const m = now.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) age--;
+            return age;
+        }
+
+        function luhnCheck(id) {
+            let sumOdd = 0;
+            for (let i = 0; i <= 10; i += 2) {
+                sumOdd += parseInt(id.charAt(i), 10);
+            }
+
+            let evenConc = '';
+            for (let i = 1; i <= 11; i += 2) {
+                evenConc += id.charAt(i);
+            }
+
+            const evenProduct = (parseInt(evenConc, 10) * 2).toString();
+            let sumEvenDigits = 0;
+            for (let ch of evenProduct) {
+                sumEvenDigits += parseInt(ch, 10);
+            }
+
+            const total = sumOdd + sumEvenDigits;
+            const checkDigit = (10 - (total % 10)) % 10;
+            return checkDigit === parseInt(id.charAt(12), 10);
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, function (m) {
+                return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+            });
         }
     </script>
 }
